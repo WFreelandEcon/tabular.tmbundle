@@ -14,16 +14,19 @@ print '''BEGIN:VCALENDAR
 VERSION:2.0'''
 
 for line in sys.stdin:
-  event, sdtime, dur, place, desc = line.strip().split('|')
-  start = parse(sdtime)
-  end = start + relativedelta(hours=+float(dur))
-  print '''BEGIN:VEVENT
+  try:
+    event, sdtime, dur, place, desc = line.strip().split('|')
+    start = parse(sdtime)
+    end = start + relativedelta(hours=+float(dur))
+    print '''BEGIN:VEVENT
 DTSTART:%s
 DTEND:%s
 SUMMARY:%s
 LOCATION:%s
 DESCRIPTION:%s
 END:VEVENT''' % (start.strftime('%Y%m%dT%H%M00'), end.strftime('%Y%m%dT%H%M00'), event, place, desc)
+  except:
+    continue
 
 print 'END:VCALENDAR'
 </string>
